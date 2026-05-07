@@ -12,14 +12,19 @@ This allows us to distinguish archetypes such as a *Deep-Lying Playmaker* vs a *
 
 ## 📊 Dataset & Sources
 - **Source:** FBref (StatsBomb-derived event data)
-- **Scope:** 2025–2026 Big Five European Leagues
+- **Scope:** 2025–2026 English Premier League season
 - **Format:** Cleaned CSV dataset (`pl_master_clean.csv`)
 
 ### Key Metrics
-- **Shooting:** Goals, Shots/90
-- **Passing:** Assists, Progressive Passes, Key Passes, Shots on Target
-- **Possession:** Crosses, Fouls, Dribbles, Touch-related proxies
-- **Defensive:** Tackles Won, Interceptions
+The model uses a combination of attacking, creative, possession, and defensive metrics to build each player's tactical profile:
+
+- **Attacking Output:** Goals, Shots, Shots on Target
+- **Creative Metrics:** Assists, Key Passes, Progressive Passes
+- **Possession & Ball Progression:** Dribbles, Crosses, Progressive Carry Proxies
+- **Defensive Activity:** Tackles Won, Interceptions, Defensive Actions
+- **Workrate Indicators:** Fouls Drawn, Pressing/Engagement Proxies
+
+These metrics are standardized and combined into tactical feature groups used for clustering and similarity analysis.
 
 ---
 
@@ -44,9 +49,9 @@ Players are then embedded into a standardized feature space using:
 
 - StandardScaler normalization
 - Feature groupings:
-  - **Progressive Index:** Shots, Crosses, Fouls
-  - **Creative Index:** Assists, Goals, Shooting Output
-  - **Workrate Index:** Tackles Won, Interceptions
+  - **Progressive Index:** Progressive passes, dribbles, crossing activity
+  - **Creative Index:** Assists, key passes, attacking contribution
+  - **Workrate Index:** Tackles won, interceptions, defensive involvement
 
 A **K-Means clustering model** is applied to identify natural groupings of player profiles.
 
@@ -59,7 +64,7 @@ To support scouting and comparison:
 
 - Cosine similarity is computed across the full feature space
 - Players are matched to their closest statistical peers
-- “Statistical twins” are identified across leagues and positions
+- “Statistical twins” are identified across tactical profiles
 
 Example:
 > A right-back is compared to other high-progression inverted fullbacks rather than all defenders.
